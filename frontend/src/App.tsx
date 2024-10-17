@@ -6,15 +6,20 @@ import { useDropzone} from 'react-dropzone';
 
 import FormRow from "./components/FormRow";
 import FormLabel from "./components/FormLabel";
-import InputText from "./components/InputText";
+
 
 
 function App() {
+  const [isBreedActive,setIsBreedActive] = useState(false);
+  const[breed,setBreed] = useState("")
+
   const handleRequest = async() =>{
     try {
-      const response = await fetch('http://localhost:8080/api/hello')
-      const data = await response.text(); 
-      console.log(data);
+      const response = await fetch('http://localhost:8080/api/classify')
+      const text = await response.text(); 
+      console.log(text);
+      setBreed(text);
+      setIsBreedActive(true)
       }catch(error){
         console.log(error);
       }
@@ -43,7 +48,16 @@ function App() {
    */
   async function handleOnSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
-    console.log("bosh");
+    const formData = new FormData();
+    console.log(acceptedFiles[0]);
+    formData.append("file",acceptedFiles[0]);
+    console.log(formData.entries());
+    const result = await fetch("http://localhost:8080/api/upload",{
+      method:"POST",
+      body:formData,
+
+    })
+    handleRequest();
   }
 
 
@@ -76,6 +90,10 @@ function App() {
 
           <button>Submit</button>
         </form>
+        {isBreedActive &&
+           <p>This cat's breed is {breed}</p>
+        }
+
 
       </>
 
