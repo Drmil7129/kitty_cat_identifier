@@ -27,7 +27,6 @@ public class DemoApplication {
 	@CrossOrigin( origins = "http://localhost:5173")
 	@RequestMapping(method = RequestMethod.POST,path = "/upload")
 	public void upload(@RequestParam("file") MultipartFile file) throws Exception {
-		System.out.println("Got image");
 		byte[] bytes = file.getBytes();
 		ByteArrayInputStream inStreambj = new ByteArrayInputStream(bytes);
 		BufferedImage newImage = ImageIO.read(inStreambj);
@@ -45,8 +44,6 @@ public class DemoApplication {
 		@CrossOrigin( origins = "http://localhost:5173")
 		@RequestMapping(path = "/classify")
 	public String sendClass(String classification){
-			System.out.println("returning class");
-			System.out.println(breed);
 		return breed;
 	}
 
